@@ -1,0 +1,48 @@
+import axios from 'axios'
+
+// Crear instancia de Axios
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})
+
+// Interceptor de solicitud (request)
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token') // o sessionStorage, según tu lógica
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+  },
+  (error) => {
+    console.error('Error en la solicitud:', error)
+    return Promise.reject(error)
+  }
+)
+
+// Interceptor de respuesta (response)
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // Manejo global de errores
+    if (error.response) {
+      const { status } = error.response
+      if (status === 401) {
+        console.warn('No autorizado. Redirigiendo al login...')
+        // Aquí podrías redirigir al login, limpiar el token, etc.
+      } else if (status === 500) {
+        console.error('Error interno del servidor')
+      }
+    } else {
+      console.error('Error sin respuesta del servidor:', error.message)
+    }
+
+    return Promise.reject(error)
+  }
+)
+
+export default api
