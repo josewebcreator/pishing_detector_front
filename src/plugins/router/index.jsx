@@ -7,21 +7,21 @@ import Login from '@/views/public/Login/index.jsx';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />, // App es el envoltorio (layout) principal
+    element: <App />, // Layout principal
     children: [
       {
         path: '/',
-        element: <AuthGuard />, // AuthGuard es el componente protector
+        element: <AuthGuard />, // AuthGuard envuelve TODAS las rutas hijas
         children: [
           {
-            path: '', // Ruta raíz: "/"
-            element: <Home />, // La Home solo se carga si AuthGuard lo permite
+            path: '', // Ruta raíz
+            element: <Home />,
+          },
+          {
+            path: 'login', // Login también pasa por AuthGuard
+            element: <Login />,
           },
         ],
-      },
-      {
-        path: 'login', // Ruta: "/login"
-        element: <Login />, // Login es una ruta pública, pero AuthGuard aún la protege contra accesos de usuarios logueados
       },
     ],
   },
