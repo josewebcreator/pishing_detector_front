@@ -1,3 +1,36 @@
+/* * 1. Importaciones de Tailwind CSS
+ * --------------------------------
+ */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* * 2. Reglas Globales y de Base (HTML/Body)
+ * ---------------------------------------
+ */
+body, #root {
+  /* Asegura que no haya márgenes ni paddings por defecto */
+  margin: 0;
+  padding: 0;
+  
+  /* Asegura que el contenedor raíz (body/root) ocupe al menos toda la altura del viewport */
+  min-height: 100vh;
+  
+  /* Estilo visual de fondo bonito */
+  /* Un degradado azul suave y profesional */
+  background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+  
+  /* Asegura que el fondo cubra todo el espacio sin repetición */
+  background-attachment: fixed; 
+  
+  /* Usa la fuente Inter (o la fuente sans-serif por defecto) */
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Regla para el contenido (el layout del AuthGuard) */
+/* Es crucial asegurar que el contenedor principal de React (#root) también cubra 100vh */
+#root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}

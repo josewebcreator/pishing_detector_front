@@ -1,72 +1,61 @@
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { login, logout } from '@/plugins/redux/slices/authSlice'; 
+import { CircularProgress, Box, Typography } from '@mui/material';
+import { login, logout } from '@/plugins/redux/slices/authSlice';
 
 const AuthGuard = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const dispatch = useDispatch();
+    const [isAuthChecked, setIsAuthChecked] = useState(false);
+    const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
-  useEffect(() => {
-    const currentPath = location.pathname;
-    const isLoginPage = currentPath.includes('/login');
+    useEffect(() => {
+        const token = typeof window !== 'undefined' ? window.localStorage.getItem('access_token') : null;
+        if (token) {
+            dispatch(login());
+        } else {
+            dispatch(logout());
+        }
+        setIsAuthChecked(true);
+    }, [dispatch]);
 
-    if (!isLoggedIn) {
-      if (!isLoginPage) {
-        navigate('/login', { replace: true });
-      }
-    } else {
-      if (isLoginPage) {
-        navigate('/', { replace: true });
-      }
+    useEffect(() => {
+        if (!isAuthChecked) return;
+
+        const currentPath = location.pathname;
+        const isLoginPage = currentPath === '/login';
+
+        if (!isLoggedIn && !isLoginPage) {
+            navigate('/login', { replace: true });
+        }
+
+        if (isLoggedIn && isLoginPage) {
+            navigate('/', { replace: true });
+        }
+    }, [isLoggedIn, navigate, location.pathname, isAuthChecked]);
+
+    if (!isAuthChecked) {
+        return (
+            <Box className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-100 to-blue-100">
+                <CircularProgress color="primary" size={60} />
+                <Typography variant="h6" className="mt-4 text-gray-600">
+                    Cargando sesión...
+                </Typography>
+            </Box>
+        );
     }
-  }, [isLoggedIn, navigate, location.pathname]);
 
-  const handleLogin = () => dispatch(login());
-  const handleLogout = () => dispatch(logout());
-
-  return (
-    <div className="flex flex-col min-h-screen">
-      <header className="p-4 bg-indigo-700 text-white shadow-lg">
-        <h1 className="text-2xl font-bold">Mi Aplicación (Redux Auth Guard)</h1>
-        <div className="flex space-x-4 mt-2 items-center">
-            <div className="text-sm font-medium">
-                Estado: {isLoggedIn ? '✅ Autenticado' : '❌ No Autenticado'}
-            </div>
-            
-            {isLoggedIn ? (
-                <button 
-                    onClick={handleLogout} 
-                    className="px-3 py-1 bg-red-500 rounded-lg hover:bg-red-600 transition duration-150 shadow-md"
-                >
-                    Cerrar Sesión
-                </button>
-            ) : (
-                <button 
-                    onClick={handleLogin} 
-                    className="px-3 py-1 bg-green-500 rounded-lg hover:bg-green-600 transition duration-150 shadow-md"
-                >
-                    Inicio de Sesión
-                </button>
-            )}
-            <button 
-                onClick={() => navigate('/')}
-                className="px-3 py-1 bg-indigo-500 rounded-lg hover:bg-indigo-600 transition duration-150 shadow-md"
-            >
-                Ir a Home ( / )
-            </button>
+    return (
+        <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-100 to-blue-100">
+            <main className="flex-grow p-8">
+                <div className="max-w-7xl mx-auto bg-white shadow-md rounded-xl p-6">
+                    <Outlet />
+                </div>
+            </main>
         </div>
-      </header>
-      
-      <main className="flex-grow p-8 bg-gray-100">
-        <Outlet />
-      </main>
-      
-    </div>
-  );
+    );
 };
 
 export default AuthGuard;
