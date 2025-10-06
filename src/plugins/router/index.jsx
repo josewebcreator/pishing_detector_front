@@ -3,6 +3,7 @@ import App from '@/App';
 import AuthGuard from '@/components/AuthGuard'; 
 import Home from '@/views/auth/Home/index.jsx';
 import Login from '@/views/public/Login/index.jsx';
+import NotFound from '@/views/public/NotFound';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,11 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: '*',
+    element: <NotFound />,
+  }
+
 ]);
 
 export default router;
