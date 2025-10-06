@@ -28,12 +28,10 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Manejo global de errores
     if (error.response) {
       const { status } = error.response
       if (status === 401) {
         console.warn('No autorizado. Redirigiendo al login...')
-        // Aquí podrías redirigir al login, limpiar el token, etc.
       } else if (status === 500) {
         console.error('Error interno del servidor')
       }

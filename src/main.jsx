@@ -1,6 +1,8 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from '@/plugins/redux/store/index'; 
 import '@/index.css'; 
 import '@/plugins/axios'; 
 import router from '@/plugins/router'; 
@@ -10,6 +12,8 @@ const root = createRoot(rootElement);
 
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );

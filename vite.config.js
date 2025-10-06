@@ -3,7 +3,6 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-// Simular __dirname en ESM
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
