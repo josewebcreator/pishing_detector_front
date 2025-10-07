@@ -19,8 +19,8 @@ const API_ROUTES = {
 
   // Endpoints relacionados con Correos Fraudulentos (Fraudulent Emails)
   fraudulentEmails: {
-    classify: '/emails/classify', // POST /emails/classify (Clasificar y almacenar)
     getRecipients: (emailId) => `/emails/${emailId}/recipients`, // GET /emails/{email_id}/recipients
+    list: '/emails/'
   },
 
   // Endpoints relacionados con Receptores de Correos Fraudulentos (Links)

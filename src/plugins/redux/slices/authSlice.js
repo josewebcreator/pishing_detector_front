@@ -14,6 +14,7 @@ const authSlice = createSlice({
     },
     logout: (state) => {
       state.isLoggedIn = false;
+      localStorage.removeItem('access_token');
     },
     setIsLoggedIn: (state, action) => {
         state.isLoggedIn = action.payload;

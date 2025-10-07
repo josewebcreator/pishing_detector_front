@@ -15,9 +15,6 @@ const Menu = () => {
   const location = useLocation();
 
   const menuItems = [
-    { label: 'Inicio', path: '/' },
-    { label: 'Perfil', path: '/profile' },
-    { label: 'Configuración', path: '/settings' },
     { label: 'Cerrar sesión', path: '/logout' },
   ];
 

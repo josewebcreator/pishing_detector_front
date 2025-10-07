@@ -4,6 +4,8 @@ import AuthGuard from '@/components/AuthGuard';
 import Home from '@/views/auth/Home/index.jsx';
 import Login from '@/views/public/Login/index.jsx';
 import NotFound from '@/views/public/NotFound';
+import FraudulentEmailList from '@/views/auth/FraudulentEmailList';
+import Logout from '@/components/Logout';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +19,12 @@ const router = createBrowserRouter([
           {
             path: '', // Ruta raíz
             element: <Home />,
+            children:[
+              {
+                path: '',
+                element: <FraudulentEmailList />
+              }
+            ]
           },
           {
             path: 'login', // Login también pasa por AuthGuard
@@ -24,6 +32,7 @@ const router = createBrowserRouter([
           },
         ],
       },
+      { path: 'logout', element: <Logout /> }
     ],
   },
   {
